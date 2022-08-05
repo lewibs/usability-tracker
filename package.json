@@ -1,0 +1,31 @@
+{
+  "name": "usability-tracker",
+  "version": "1.0.0",
+  "description": "automated usability tester. Used to keep track of user actions and their goals when using the program.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lewibs/usability-tracker.git"
+  },
+  "keywords": [
+    "usability",
+    "test",
+    "testing",
+    "user",
+    "tracking",
+    "logging",
+    "search"
+  ],
+  "author": "lewibs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lewibs/usability-tracker/issues"
+  },
+  "homepage": "https://github.com/lewibs/usability-tracker#readme",
+  "dependencies": {
+    "lewibs-keylogger": "^1.0.5"
+  }
+}
