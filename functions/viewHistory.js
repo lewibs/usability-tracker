@@ -30,14 +30,48 @@ function activateAction(action) {
 function makeActions(history) {
     function make(eventObj) {
         const delay = calculateDelay(eventObj.time, info.basetime);
-        let action = function unknownAction() {
-            console.warn("unknown user action");
-        }
+        const event = eventObj.event;
+        console.log(event);
 
-        if (eventObj.event.type === "mousemove") {
-            action = function mousemove() {
-                info.mouse.update(eventObj.event.x, eventObj.event.y);
-            }
+        //how to handle:
+        //"wheel"
+        //"leftmouse"
+        //"middlemouse"
+        //"rightmouse"
+
+        let action = ()=>{};
+        switch (event.type) {
+            case "mousemove":
+                action = function mousemove() {
+                    console.log("mousemove")
+                    info.mouse.update(event.x, event.y);
+                }
+                break;
+            case "mousedown":
+                action = function mousedown() {
+                    console.log("mousedown");
+                    //document.elementFromPoint(event.x, event.y).click();
+                }
+                break;
+            case 'mouseup':
+                action = function mouseup() {
+                    console.log("mouseup");
+                }
+                break;
+            case 'keydown':
+                action = function keydown() {
+                    console.log("keydown");
+                }
+                break;
+            case 'keyup':
+                action = function keyup() {
+                    console.log("keyup");
+                }
+                break;
+            default:
+                action = function unknown(){
+                    console.warn(`unknown user action: ${event.type}`);
+                }
         }
 
         return {
@@ -46,12 +80,7 @@ function makeActions(history) {
         }
     }
 
-    history = updateTail(
-        history.map(make),
-        (tail)=>{tail.action = doBoth(tail.action, killAction)},
-    );
-
-    return history;
+    return attachKillAction(history.map(make));
 }
 
 function updateTail(arr, doOn) {
@@ -74,4 +103,11 @@ function doBoth(old, func) {
 function killAction() {
     info.mouse.hide();
     info.clean();
+}
+
+function attachKillAction(history) {
+    return updateTail(
+        history,
+        (tail)=>{tail.action = doBoth(tail.action, killAction)},
+    );
 }
