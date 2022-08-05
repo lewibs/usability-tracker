@@ -3,8 +3,6 @@ export class Mouse {
 
     constructor() {
         this.#element = makeMouse();
-        this.update(0,0);
-        this.show();
     }
 
     show() {

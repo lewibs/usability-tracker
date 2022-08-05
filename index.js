@@ -1,2 +1,2 @@
-import UserTracker from "./UserTracker";
+import UserTracker from "./classes/UserTracker";
 export default UserTracker;

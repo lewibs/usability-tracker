@@ -1,18 +1,16 @@
 import keylogger from "lewibs-keylogger";
-import {blockPush, affixCallbackToArray} from "./functions";
+import {blockPush, affixCallbackToArray} from "../functions/array";
 
 export class Keylogger {
     #keylogger = undefined;
 
     constructor(
-        filter=a=>true,
-        history=[],
         onUpdate,
+        filter=a=>true,
     ) {
         this.#keylogger = new keylogger();
-        this.#keylogger.history = history;
 
-        blockPush(this.#keylogger.history, filter, blockPassword);
+        blockPush(this.#keylogger.history, blockPassword, filter);
 
         if (onUpdate) {
             affixCallbackToArray(this.#keylogger.history, onUpdate);
