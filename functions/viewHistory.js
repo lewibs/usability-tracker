@@ -31,7 +31,6 @@ function makeActions(history) {
     function make(eventObj) {
         const delay = calculateDelay(eventObj.time, info.basetime);
         const event = eventObj.event;
-        console.log(event);
 
         //how to handle:
         //"wheel"
