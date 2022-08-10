@@ -1,4 +1,4 @@
-import Mouse from "../classes/Mouse";
+import Mouse, { ratioToPx } from "../classes/Mouse";
 
 const info = {
     mouse: new Mouse(),
@@ -31,6 +31,7 @@ function makeActions(history) {
     function make(eventObj) {
         const delay = calculateDelay(eventObj.time, info.basetime);
         const event = eventObj.event;
+        const [x,y] = ratioToPx(event.ratioX, event.ratioY);
 
         //how to handle:
         //"wheel"
@@ -43,7 +44,7 @@ function makeActions(history) {
             case "mousemove":
                 action = function mousemove() {
                     console.log("mousemove")
-                    info.mouse.update(event.x, event.y);
+                    info.mouse.update(x, y);
                 }
                 break;
             case "mousedown":

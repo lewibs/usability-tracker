@@ -1,8 +1,14 @@
 export class Mouse {
     #element;
+    #x;
+    #y;
 
     constructor() {
         this.#element = makeMouse();
+    }
+
+    click(x=this.#x, y=this.#y) {
+        click(x, y);
     }
 
     show() {
@@ -14,10 +20,28 @@ export class Mouse {
     }
 
     update(x,y) {
+        this.#x = x;
+        this.#y = y;
+
         this.hide();
         this.#element = updateMouse(this.#element, x, y);
         this.show();
     }
+}
+
+function click(x, y)
+{
+    var ev = new MouseEvent('click', {
+        'view': window,
+        'bubbles': true,
+        'cancelable': true,
+        'screenX': x,
+        'screenY': y
+    });
+
+    var el = document.elementFromPoint(x, y);
+
+    el.dispatchEvent(ev);
 }
 
 function updateMouse(mouse, x, y) {
@@ -53,5 +77,14 @@ function makeID() {
     MOUSEIDCOUNT++;
     return `mouse-user-test-${MOUSEIDCOUNT}`;
 }
+
+export function pxToRatio(x, y) {
+    return [x/window.innerWidth, y/window.innerHeight];
+}
+
+export function ratioToPx(x, y) {
+    return [x*window.innerWidth, y*window.innerHeight];
+}
+
 
 export default Mouse;
