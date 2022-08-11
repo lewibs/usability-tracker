@@ -43,37 +43,41 @@ export class Mouse {
 }
 
 function makeMouseEvent(type, key, x, y) {
-    return makeEvent(type, {
+    const props = makeEventProps({
         key: key,
         clientX: x,
         clientY: y,
     });
+
+    return new MouseEvent(type, props);
 }
 
 function makeKeyboardEvent(type, key, x, y) {
-    return makeEvent(type, {
+    const props = makeEventProps({
         key: key,
         clientX: x,
         clientY: y,
     });
+
+    return new KeyboardEvent(type, props);
 }
 
 function makeWheelEvent(type, key, x, y) {
-    return makeEvent(type, {
+    const props = makeEventProps({
         key: key,
         deltaX: x,
         deltaY: y,
     });
+
+    return new WheelEvent(type, props);
 }
 
-function makeEvent(type, props) {
-    props = Object.assign({
+function makeEventProps(props) {
+    return Object.assign({
         'view': window,
         'bubbles': true,
         'cancelable': true
     }, props);
-
-    return new Event(type, props);
 }
 
 const lastLocation = {x:0,y:0}
@@ -82,30 +86,33 @@ function updateLocation(x,y) {
     lastLocation.y = y;
 }
 
-function dispatchEvent(event) {
-    const element = document.elementFromPoint(lastLocation.x, lastLocation.y);
-    element.dispatchEvent(event);
-}
-
 function dispatchKeyEvent(type, key, x, y) {
-    dispatchEvent(makeKeyboardEvent(type, key, x, y));
+    const event = makeKeyboardEvent(type, key, x, y);
+    document.elementFromPoint(lastLocation.x,lastLocation.y).dispatchEvent(event);
 }
 
 function dispatchWheelEvent(type, key, x, y) {
-    dispatchEvent(makeWheelEvent(type, key, x, y));
+    const event = makeWheelEvent(type, key, x, y);
+    document.elementFromPoint(lastLocation.x,lastLocation.y).dispatchEvent(event);
 }
 
 function dispatchMouseEvent(type, key, x, y) {
-    if (type === LEFTMOUSE) {
+    if (key === LEFTMOUSE) {
         key = 1;
-        updateLocation(x,y);
-    } else if (type === MIDDLEMOUSE) {
+    } else if (key === MIDDLEMOUSE) {
         key = 2;
-    } else if (type === RIGHTMOUSE) {
+    } else if (key === RIGHTMOUSE) {
         key = 3;
     }
 
-    dispatchEvent(makeMouseEvent(type, key, x, y));
+    updateLocation(x,y);
+
+    if (key = 1 && (type === "mousedown" || type === "click")) {
+        document.elementFromPoint(x,y).click();
+    } else {
+        const event = makeMouseEvent(type, key, x, y);
+        document.elementFromPoint(x,y).dispatchEvent(event);
+    }
 }
 
 function updateMouse(mouseElement, x, y) {
