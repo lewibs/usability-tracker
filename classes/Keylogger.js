@@ -12,18 +12,26 @@ export class Keylogger {
     ) {
         this.#keylogger = new keylogger();
 
-        //blibks passwords
+        //blocks passwords
         blockPush(this.#keylogger.history, blockPassword, filter);
 
-        //attaches id
+        //attaches important fields
         affixCallbackToArray(this.#keylogger.history, function (e) {
             e.userID = id;
+            e.type = e.event.type;
+            e.event.currentKey = e.event.key;
             return e;
         });
 
         //saves the ratio of x and y so that it can be used later on any screen size
         affixCallbackToArray(this.#keylogger.history, function (e) {
+            //mousemove
             [e.event.ratioX, e.event.ratioY] = pxToRatio(e.event.clientX, e.event.clientY);
+
+            //wheelscroll
+            e.event.wheelX = e.event.deltaX;
+            e.event.wheelY = e.event.deltaY;
+            [e.event.wheelRatioX, e.event.wheelRatioY] = pxToRatio(e.event.deltaX, e.event.deltaY);
             return e;
         });
 

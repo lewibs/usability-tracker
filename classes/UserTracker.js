@@ -2,7 +2,7 @@ import Keylogger from "./Keylogger";
 import {viewHistory} from "../functions/viewHistory";
 import { v4 as uuidv4 } from 'uuid';
 
-const LOCALTAG = "lewibs-usrID";
+const LOCALTAG = "lewibs-UserTracker-usrID";
 
 export class UserTracker {
     #keylogger;

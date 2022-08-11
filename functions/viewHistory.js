@@ -32,46 +32,50 @@ function makeActions(history) {
     function make(eventObj) {
         const delay = calculateDelay(eventObj.time, info.basetime);
         const event = eventObj.event;
-        const [x,y] = ratioToPx(event.ratioX, event.ratioY);
-
-        //how to handle:
-        //"wheel"
-        //"leftmouse"
-        //"middlemouse"
-        //"rightmouse"
+        const type = event.type;
+        const key = event.currentKey;
 
         let action = ()=>{};
-        switch (event.type) {
+        switch (type) {
             case "mousemove":
                 action = function mousemove() {
-                    console.log("mousemove")
-                    info.mouse.update(x, y);
+                    //console.log("mousemove")
+                    info.mouse.update(...getMouseXY(event));
                 }
                 break;
             case "mousedown":
                 action = function mousedown() {
-                    console.log("mousedown");
-                    info.mouse.click(x,y);
+                    //console.log("mousedown");
+                    info.mouse.mouseDown(key, ...getMouseXY(event));
                 }
                 break;
             case 'mouseup':
                 action = function mouseup() {
-                    console.log("mouseup");
+                    //console.log("mouseup");
+                    info.mouse.mouseUp(key, ...getMouseXY(event));
                 }
                 break;
             case 'keydown':
                 action = function keydown() {
-                    console.log("keydown");
+                    //console.log("keydown");
+                    info.mouse.keyDown(key, ...getMouseXY(event));
                 }
                 break;
             case 'keyup':
                 action = function keyup() {
-                    console.log("keyup");
+                    //console.log("keyup");
+                    info.mouse.keyUp(key, ...getMouseXY(event));
+                }
+                break;
+            case 'wheel':
+                action = function wheel() {
+                    //console.log("wheel");
+                    info.mouse.wheel(key, ...getWheelXY(event));
                 }
                 break;
             default:
                 action = function unknown(){
-                    console.warn(`unknown user action: ${event.type}`);
+                    console.warn(`unknown user action: ${type}`);
                 }
         }
 
@@ -82,6 +86,15 @@ function makeActions(history) {
     }
 
     return attachKillAction(history.map(make));
+}
+
+function getMouseXY(event) {
+    return ratioToPx(event.ratioX, event.ratioY);
+}
+
+function getWheelXY(event) {
+    debugger;
+    return ratioToPx(event.wheelRatioX, event.wheelRatioY);
 }
 
 function updateTail(arr, doOn) {
