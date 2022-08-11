@@ -1,6 +1,6 @@
 {
   "name": "usability-tracker",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "automated usability tester. Used to keep track of user actions and their goals when using the program.",
   "main": "index.js",
   "scripts": {

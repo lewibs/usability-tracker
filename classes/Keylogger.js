@@ -29,7 +29,6 @@ export class Keylogger {
             [e.event.ratioX, e.event.ratioY] = pxToRatio(e.event.clientX, e.event.clientY);
 
             //wheelscroll
-            console.log(e)
             e.event.wheelX = e.event.deltaX;
             e.event.wheelY = e.event.deltaY;
             [e.event.wheelRatioX, e.event.wheelRatioY] = pxToRatio(e.event.deltaX, e.event.deltaY);
