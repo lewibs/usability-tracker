@@ -1,3 +1,5 @@
+import {WHEEL, LEFTMOUSE, MIDDLEMOUSE, RIGHTMOUSE} from "lewibs-keylogger";
+
 export class Mouse {
     #element;
     #x;
@@ -7,16 +9,16 @@ export class Mouse {
         this.#element = makeMouse();
     }
 
-    click(x=this.#x, y=this.#y) {
-        click(x, y);
-    }
-
     show() {
         document.body.append(this.#element);
     }
 
     hide() {
         this.#element.remove();
+    }
+
+    dispatchMouseEvent(type, key, x=this.#x, y=this.#y) {
+        dispatchMouseEvent(type, key, x, y);
     }
 
     update(x,y) {
@@ -29,19 +31,35 @@ export class Mouse {
     }
 }
 
-function click(x, y)
-{
-    var ev = new MouseEvent('click', {
+function makeEvent(type, key, x, y) {
+    return new MouseEvent(type, {
+        'key': key,
         'view': window,
         'bubbles': true,
         'cancelable': true,
         'screenX': x,
-        'screenY': y
+        'screenY': y,
+        'clientX': x,
+        'clientY': y,
     });
+}
 
-    var el = document.elementFromPoint(x, y);
-
+function dispatchEvent(type, key, x, y) {
+    const ev = makeEvent(type, key, x, y);
+    const el = document.elementFromPoint(x, y);
     el.dispatchEvent(ev);
+}
+
+export function dispatchWheelEvent(type, key, x, y) {
+
+}
+
+export function dispatchMouseEvent(type, key, x, y) {
+    if (type === LEFTMOUSE) {
+        key = 
+    }
+
+    dispatchEvent(type, key, x, y);
 }
 
 function updateMouse(mouse, x, y) {
@@ -76,14 +94,6 @@ let MOUSEIDCOUNT = 0;
 function makeID() {
     MOUSEIDCOUNT++;
     return `mouse-user-test-${MOUSEIDCOUNT}`;
-}
-
-export function pxToRatio(x, y) {
-    return [x/window.innerWidth, y/window.innerHeight];
-}
-
-export function ratioToPx(x, y) {
-    return [x*window.innerWidth, y*window.innerHeight];
 }
 
 

@@ -1,11 +1,12 @@
 import keylogger from "lewibs-keylogger";
 import {blockPush, affixCallbackToArray} from "../functions/array";
-import { pxToRatio } from "./Mouse";
+import { pxToRatio } from "../functions/window";
 
 export class Keylogger {
     #keylogger = undefined;
 
     constructor(
+        id="undefined-user",
         onUpdate,
         filter=a=>true,
     ) {
@@ -14,9 +15,21 @@ export class Keylogger {
         //blibks passwords
         blockPush(this.#keylogger.history, blockPassword, filter);
 
+        //attaches id
+        affixCallbackToArray(this.#keylogger.history, function (e) {
+            e.userID = id;
+            return e;
+        });
+
         //saves the ratio of x and y so that it can be used later on any screen size
         affixCallbackToArray(this.#keylogger.history, function (e) {
             [e.event.ratioX, e.event.ratioY] = pxToRatio(e.event.clientX, e.event.clientY);
+            return e;
+        });
+
+        //attaches stringer
+        affixCallbackToArray(this.#keylogger.history, function (e) {
+            e.toString = ()=>JSON.stringify(e);
             return e;
         });
 

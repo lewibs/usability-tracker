@@ -1,4 +1,5 @@
-import Mouse, { ratioToPx } from "../classes/Mouse";
+import Mouse from "../classes/Mouse";
+import { ratioToPx } from "./window";
 
 const info = {
     mouse: new Mouse(),
@@ -50,7 +51,7 @@ function makeActions(history) {
             case "mousedown":
                 action = function mousedown() {
                     console.log("mousedown");
-                    //document.elementFromPoint(event.x, event.y).click();
+                    info.mouse.click(x,y);
                 }
                 break;
             case 'mouseup':
