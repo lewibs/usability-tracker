@@ -43,6 +43,7 @@ export class Keylogger {
             return e;
         });
 
+        //this should be last to make sure we get all the goods
         if (onUpdate) {
             affixCallbackToArray(this.#keylogger.history, onUpdate);
         }
